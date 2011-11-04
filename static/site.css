@@ -1,0 +1,36 @@
+body {
+	font-family: Tahoma, sans-serif;	
+}
+
+
+header {
+	border-bottom:1px solid #EEE;
+}
+	header h1 {
+		margin:3px;
+		padding:3px;
+		font-size:24px;
+		color:#CCCCCC;
+		text-align: right;
+	}
+
+nav ul {
+	list-style-type: none;
+	padding:0px;
+	margin:0px;
+	overflow:auto;
+}
+	nav ul li {
+		float:left;
+		padding:4px;
+	}
+	nav li a {
+		color: green;
+		text-decoration:none;
+		border-bottom:1px dotted #ccc;		
+	}
+
+article#main {
+
+    padding:10px;
+}
