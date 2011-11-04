@@ -3,6 +3,10 @@
 
 class Gallery extends CI_Controller {
 
+    /**
+     *
+     * @param type $id parādāmās galerijas ID no datubāzes
+     */
     public function view($id = 0)
 	{	 
 	    $data = array("id"=>intval($id));
