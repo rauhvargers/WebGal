@@ -36,7 +36,7 @@
          } else {
              $this->id = 0; //pazīme, ka nav atrasts
          }
-         return $this;//$query->get()->result();
+         return $this;
     }
     
     
