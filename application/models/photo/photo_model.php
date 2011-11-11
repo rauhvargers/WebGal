@@ -39,8 +39,19 @@
          return $this;
     }
     
+    /**
+     * No POST datiem savāc mainītos lauciņus un tos 
+     */
+    public function updateFromPost(){
+	
+	
+    }
     
-       /**
+    
+    /***************************************/
+    //Tālāk ir darbs ar attēlu failiem, nevis attēlu datiem
+    
+     /**
      * Atrod attēla failu nosūta to klientam
      * @param string $size Kādu izmēru atgriezt. 
         * Noklusējums - oriģinālo izmēru, bet var norādīt arī "thumb" (noklusētais priekšskatījuma izmērs)

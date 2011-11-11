@@ -41,6 +41,7 @@ class Photo extends MY_Controller {
      * @param type $id 
      */
     public function edit($id = 0) {
+	$id = intval($id);
 	//vispirms mēģināsim atrast, vai attēls vispār ir atrodams
 	$currentPic = $this->photo_model->read_by_id($id);
 
@@ -57,6 +58,7 @@ class Photo extends MY_Controller {
 	$viewdata["user_galleries"] = $this->gallery_list_model->get_user_galleries(1);
 	$this->load->view('photo/edit', $viewdata);
     }
+    
     /**
      * Fotogrāfijā veikto izmaiņu saglabāšana
      * @param type $id 
@@ -65,13 +67,15 @@ class Photo extends MY_Controller {
 	$this->load->library('form_validation');
 
 	//vispirms mēģināsim atrast, vai attēls vispār ir atrodams
-	//$dbPic = $this->photo_model->read_by_id($id);
+	$currentPic = $this->photo_model->read_by_id($id);
 	
 	$this->form_validation->set_rules('gallery_id', 'Galerijas identifikators', 'required|numeric');
 	$this->form_validation->set_rules('title', 'Virsraksts', 'required|max_length[255]');
 
 	
 	if ($this->form_validation->run() == FALSE) {
+	    //lietotāja ievadītajos datos ir kļūda
+	    //nebūtu korekti mēģināt turpināt darbu
 	    $currentPic = $this->photo_model->read_by_id($id);
 	    $this->load->model("gallery/gallery_list_model");
 	    $viewdata = $this->DefaultViewData();
@@ -80,6 +84,10 @@ class Photo extends MY_Controller {
 	    $viewdata["user_galleries"] = $this->gallery_list_model->get_user_galleries(1);
 	    $this->load->view('photo/edit', $viewdata);
 	} else {
+	    //photo_model klasē ir metode, kas prot vajadzīgos
+	    //laukus paņemt no POST datiem un saglabāt izmaņas
+	    $currentPic->updateFromPost();
+	    
 	    redirect("/photo/view/".$id);
 	    
 	}

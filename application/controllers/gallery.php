@@ -9,6 +9,8 @@ class Gallery extends MY_Controller {
     public function __construct() {
 	parent::__construct();
 	$this->load->model("gallery/gallery_model");
+	$this->load->helper("url");
+	$this->load->helper("form");
     }
 
     /**
@@ -34,6 +36,43 @@ class Gallery extends MY_Controller {
 	$viewdata["pagetitle"] = $gal->title;
 	//ir atradies.
 	$this->load->view("gallery/view.php", $viewdata);
+    }
+    
+    public function addnew(){
+	
+	$data=array();
+	$data["defaulttitle"]="Kriša galerija";
+	$this->load->view("gallery/addnew.php", $data);
+    }
+    
+    public function savenew(){
+	$title = $this->input->post("title");
+	$description = $this->input->post("description");
+	$public = $this->input->post("public");
+	
+	$this->load->database();
+	$data = array(
+	   'title' => $title ,
+	   'description' => $description ,
+	   'author_id' => 1
+	);
+	$this->db->insert('gallery', $data); 
+	redirect('gallery/view/'. $this->db->insert_id());
+	
+	/*$connection = mysql_connect("localhost", "root", "");
+	mysql_select_db("webgal");
+	mysql_set_charset("utf8");
+	$query = "insert into gallery (title, description, author_id)
+			values ('". mysql_real_escape_string($title)."',
+				'". mysql_real_escape_string($description)."',
+				1)";
+	$this->db->query($query);
+	//mysql_query($query, $connection);
+	
+	//echo mysql_error();
+	 * 
+	 */
+	
     }
 
     /**
