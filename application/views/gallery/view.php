@@ -13,6 +13,7 @@
 	}
 	?>
     </ul>
+    <?php echo anchor("photo/addnew/".$gallery->id, "Pievienot fotogrāfiju"); ?>
 </article>
 <?php
     $this->load->view("shared/app_footer");

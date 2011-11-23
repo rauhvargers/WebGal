@@ -1,6 +1,5 @@
 <?php
-$this->load->helper('form');
-    
+    $this->load->helper('form');
     $this->load->view("shared/app_header");
 ?>
 <article id="main">
