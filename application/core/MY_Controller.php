@@ -10,7 +10,8 @@ class MY_Controller extends CI_Controller {
 
 	protected function DefaultViewData(){
 		return array("show_loginform"=> FALSE,
-			     "show_logoutform" => TRUE);
+			     "show_logoutform" => TRUE,
+			     "pagetitle" => "Nav aizpildīts mainīgais pagetitle");
 	}
 }
   
