@@ -12,6 +12,19 @@ class Gallery extends MY_Controller {
 	$this->load->helper("url");
 	$this->load->helper("form");
     }
+    
+    /**
+     * Parāda visu pieejamo galeriju sarakstu
+     */
+    public function index(){
+	$this->load->model("gallery/gallery_list_model");
+	$galleries = $this->gallery_list_model->get_all_galleries();
+	
+	$viewdata = $this->DefaultViewData();
+	$viewdata["galleries"] = $galleries;
+	$viewdata["pagetitle"] = "Galeriju saraksts";
+	$this->load->view("gallery/index.php", $viewdata);	
+    }
 
     /**
      *
@@ -35,6 +48,8 @@ class Gallery extends MY_Controller {
 	$viewdata["gallery"] = $gal;
 	$viewdata["pagetitle"] = $gal->title;
 	//ir atradies.
+	
+	$gal->find_photos();
 	$this->load->view("gallery/view.php", $viewdata);
     }
     

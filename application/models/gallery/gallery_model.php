@@ -16,6 +16,7 @@ if (!defined('BASEPATH'))
     var $description = "";
     var $author_id = 0;
     var $created = 0;
+    var $photos = array();
     
      /**
      * Zinot ieraksta ID, nolasa galerijas datus
@@ -37,5 +38,14 @@ if (!defined('BASEPATH'))
              $this->id = 0; //pazīme, ka nav atrasts
          }
          return $this;
+    }
+    
+    /**
+     * Aizpilda klases atribūtu "photos", ielasa tajā
+     * fotogrāfijas, kas atbilst šai galerijai.
+     */
+    public function find_photos(){
+	$this->load->model("photo/photo_list_model");
+	$this->photos = $this->photo_list_model->from_gallery($this);
     }
   }

@@ -15,6 +15,9 @@ class Photo extends MY_Controller {
 	$this->load->model("photo/photo_model"); //visi mums te strādās ar foto modeli.
     }
 
+    public function index($id=0){
+	return $this->view($id);
+    }
     /**
      * Fotogrāfijas apskatīšana.
      * @param $id - attēla ID no datubāzes
@@ -32,7 +35,7 @@ class Photo extends MY_Controller {
 	$viewdata = $this->DefaultViewData();
 	$viewdata["pic"] = $currentPic;
 	$viewdata["pagetitle"] = "Fotogrāfijas apskate";
-	$this->load->view('photo/index', $viewdata);
+	$this->load->view('photo/view', $viewdata);
     }
 
     /**
