@@ -1,5 +1,9 @@
 <?php
 class MY_Controller extends CI_Controller {
+	
+	//pagaidām, kamēr nav lietotāju autentifikācijas
+	var $user_id = 1;
+	
   	public function __construct() {
 		parent::__construct();
 		$this->load->helper('html');

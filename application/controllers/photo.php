@@ -18,6 +18,74 @@ class Photo extends MY_Controller {
     public function index($id=0){
 	return $this->view($id);
     }
+    
+    /*
+     * Jauna attēla pievienošana - sākums
+     */
+    public function addnew($gallery_id = 0){
+	$this->load->model("gallery/gallery_model");
+	$this->load->model("gallery/gallery_list_model");
+
+	$viewdata = $this->DefaultViewData();
+	$viewdata["pagetitle"] = "Jauna fotogrāfija";
+	
+	$gal = $this->gallery_model->read_by_id($gallery_id);
+	if ($gal->id == 0) {
+	    //ja galerija nav atrasta, nevar pievienot bildi
+	    redirect("/");
+	    exit();
+	} else {
+	    $viewdata["gal"]  = $gal;
+	}
+	$viewdata["user_galleries"] = $this->gallery_list_model->get_user_galleries($this->user_id);
+	
+	$viewdata["pic"] = $this->photo_model;
+	$this->load->view("photo/addnew",$viewdata);
+    }
+    
+    /*
+     * Lietotājs ir ievadījis datus par bildi, mēģināsim saglabāt
+     */
+    public function savenew(){
+	//vajadzēs darboties ar galerijām
+	$this->load->model("gallery/gallery_model");
+	$this->load->model("gallery/gallery_list_model");
+	
+	$this->load->library('form_validation');
+	$this->form_validation->set_rules('gallery_id', 'Galerijas identifikators', 'required|numeric');
+	$this->form_validation->set_rules('title', 'Virsraksts', 'required|max_length[255]');
+	$this->form_validation->set_rules('description', 'Apraksts', 'required');
+	
+	$this->photo_model->title = $this->input->post("title");
+	$this->photo_model->description = $this->input->post("description");
+	$this->photo_model->gallery_id = $this->input->post("gallery_id");
+	
+	if ($this->form_validation->run()==FALSE){
+	    //sliktais gadījums - kaut kas no datiem nav bijis
+	    //aizpildīts pareizi
+	    $viewdata = $this->DefaultViewData();
+	    $viewdata["pagetitle"] = "Jauna fotogrāfija";
+	    
+	    $gallery_id = $this->input->post("gallery_id");
+	    $gal = $this->gallery_model->read_by_id($gallery_id);
+	    if ($gal->id == 0) {
+		//ja galerija nav atrasta, nevar pievienot bildi
+		redirect("/");
+		exit();
+	    } else {
+		$viewdata["gal"]  = $gal;
+	    }
+	    $viewdata["user_galleries"] = $this->gallery_list_model->get_user_galleries($this->user_id);
+	    $viewdata["pic"] = $this->photo_model;
+	    $this->load->view("photo/addnew",$viewdata);
+	} else {
+	    //labais gadījums, kad bildi drīkstētu saglabāt
+	    $this->photo_model->save(); //izsauc saglabāšanu
+	    redirect('photo/view/'.$this->photo_model->id);	    
+	}
+
+    }
+    
     /**
      * Fotogrāfijas apskatīšana.
      * @param $id - attēla ID no datubāzes

@@ -39,12 +39,17 @@
          return $this;
     }
     
-    /**
-     * No POST datiem savāc mainītos lauciņus un tos 
-     */
-    public function updateFromPost(){
-	
-	
+    //saglabā jauna attēla informāciju
+    public function save(){
+	$data = array(
+	   'title' => $this->title ,
+	   'description' => $this->description ,
+	   'gallery_id' =>  $this->gallery_id,
+	   'created'	=> date(DATE_RFC3339)
+	);
+	$this->db->insert('picture', $data);
+	$this->id = $this->db->insert_id();
+	return $this;
     }
     
     
@@ -59,7 +64,7 @@
      */
     public function send_sized($size='full') {
 
-       if ($this->id == 0) {
+       if ( ($this->id == 0) || ($this->filename=="")) {
            //attēls vai nu vēl nav nolasīts vai nav atradies
            $this->fullpath = $this->config->item('webgal_notfound_image');
            $this->filename = 'not_found.gif';

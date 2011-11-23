@@ -39,3 +39,7 @@ div.button{
     margin-left: 50px;
     
 }
+
+div#errors {
+    background-color: yellow;
+}

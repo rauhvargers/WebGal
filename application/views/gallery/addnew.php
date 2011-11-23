@@ -9,7 +9,7 @@
 	
 	<?php echo form_open("gallery/savenew"); ?>
 
-	<h2>Forma, kur ievadīt galerijas informāciju</h2>
+	<h2>Jauna galerija</h2>
 	
 	<fieldset>
 	
