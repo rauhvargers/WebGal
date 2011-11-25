@@ -11,6 +11,10 @@
 
 	<h2>Jauna galerija</h2>
 	
+	<div id="errors">
+	    <?php echo validation_errors(); ?>
+	</div>
+	
 	<fieldset>
 	
 	    <dl>
@@ -18,17 +22,20 @@
 		<dd>
 		    
 		   <?php 
-		    echo form_input("title", $defaulttitle);
+		    echo form_input("title", $gallery->title);
+		    echo form_error('title'); 
 		   ?></dd>
 	    
 		<dt>Apraksts</dt>
 		<dd>
-		    <?php echo form_textarea("description");?>
+		    <?php echo form_textarea("description", $gallery->description);
+			  echo form_error('description'); 
+		    ?>
 		</dd>
 		
 		<dt>Publisks?</dt>
 		<dd>
-		    <?php echo form_checkbox("public", "on");?>
+		<?php echo form_checkbox("public", $gallery->public);?>
 		</dd>
 	    </dl>
 	    <div class="button">
