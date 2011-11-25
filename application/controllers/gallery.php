@@ -56,37 +56,26 @@ class Gallery extends MY_Controller {
     public function addnew(){
 	
 	$data=array();
-	$data["defaulttitle"]="Kriša galerija";
+	$data["gallery"] = $this->gallery_model;
 	$this->load->view("gallery/addnew.php", $data);
     }
     
+    
+    
     public function savenew(){
-	$title = $this->input->post("title");
-	$description = $this->input->post("description");
-	$public = $this->input->post("public");
 	
-	$this->load->database();
-	$data = array(
-	   'title' => $title ,
-	   'description' => $description ,
-	   'author_id' => 1
-	);
-	$this->db->insert('gallery', $data); 
-	redirect('gallery/view/'. $this->db->insert_id());
+	$this->gallery_model->load_from_post();
 	
-	/*$connection = mysql_connect("localhost", "root", "");
-	mysql_select_db("webgal");
-	mysql_set_charset("utf8");
-	$query = "insert into gallery (title, description, author_id)
-			values ('". mysql_real_escape_string($title)."',
-				'". mysql_real_escape_string($description)."',
-				1)";
-	$this->db->query($query);
-	//mysql_query($query, $connection);
+	if ($this->gallery_model->is_valid()) {
+	    $this->gallery_model->save();
+	    redirect('gallery/view/'. $this->gallery_model->id);
+	} else {
+		
+	    $data=array();
+	    $data["gallery"] = $this->gallery_model;
+	    $this->load->view("gallery/addnew.php", $data); 
+	}
 	
-	//echo mysql_error();
-	 * 
-	 */
 	
     }
 
