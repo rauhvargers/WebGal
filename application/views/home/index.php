@@ -7,6 +7,7 @@
                     echo anchor("/photo/view/".$row->id, $row->title);
 		}
 	?>
+    
 </article>
 
 <?php

@@ -10,7 +10,7 @@
     	<li><?php echo anchor("gallery/view/".$key, htmlspecialchars($value));?></li>
     <?php } ?>	
     </ul>
-</article>
+ </article>
 
 <?php
     $this->load->view("shared/app_footer");
