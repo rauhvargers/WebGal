@@ -22,9 +22,11 @@
 					<li><?php echo anchor('/gallery', 'Galerijas', 'title="Skatīt visas galerijas"'); ?></li>
 					<li><?php echo anchor('/user/index', 'Lietotāji', 'title="Skatīt lietotāju sarakstu"'); ?></li>
 					<?php if ($show_loginform == TRUE ){ ?>
-						<li><?php echo anchor('/user/auth/', 'Pierakstīties', 'title="Autentificēties sistēmā"'); ?></li>
+						<li><?php echo anchor('/users/login/', 'Pierakstīties', 'title="Autentificēties sistēmā"'); ?></li>
 					<?php } elseif ($show_logoutform == TRUE) { ?>
-						<li><?php echo anchor('/user/auth/', 'Atteikties', 'title="Autentificēties sistēmā"'); ?></li>
+						<li><?php 
+							echo "Pieteicies kā " . htmlspecialchars($username). " ";
+							echo anchor('/users/logout/', 'Atteikties', 'title="Autentificēties sistēmā"'); ?></li>
 					<?php } ?>
 					
 				</ul>				

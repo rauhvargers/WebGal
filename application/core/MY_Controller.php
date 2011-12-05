@@ -9,12 +9,21 @@ class MY_Controller extends CI_Controller {
 		$this->load->helper('html');
 		$this->load->helper('url');
 		$this->load->helper('webgal'); //pašu helper funkcijas
+		$this->load->library("session");
 				
 	}
 
 	protected function DefaultViewData(){
-		return array("show_loginform"=> FALSE,
-			     "show_logoutform" => TRUE,
+		$username = "";
+		if(!$this->session->userdata("is_authenticated")){
+		    $is_auth=false;
+		} else {
+		    $is_auth =true;
+		    $username =  $this->session->userdata("username");
+		}
+		return array("show_loginform"=> !$is_auth,
+			     "show_logoutform" => $is_auth,
+			     "username"	=> $username,
 			     "pagetitle" => "Nav aizpildīts mainīgais pagetitle");
 	}
 }
