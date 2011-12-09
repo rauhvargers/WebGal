@@ -31,10 +31,16 @@
 <?php if (isset($error)) { ?><p class="error"><?php echo $error ?></p><?php } ?>
 	    <label for="username">Lietotājs</label><input type="text" name="username" id="username" />
 	    <label for="password">Parole</label><input type="password" name="password" id="password" />
-
 	    <input type="submit" value="Iežurnalēties!" />
+	    
+	    <?php		
+	    echo anchor("users/login_fb", "&hellip; es gribu ar Facebook");
+		    ?>	    
+	    <p>
+		<?php echo anchor("users/registrationform", "Reģistrēties"); ?>
+	    </p>
 	</fieldset>
-
+	
 <?php echo form_close() ?>
 
     </body>

@@ -8,6 +8,12 @@
 		<link rel="shortcut icon" href="/favicon.ico" /><br/>
 		<?php
 			echo link_tag('static/site.css?version=1.2', 'stylesheet', 'text/css'); 
+			if (isset($scripts)){
+			    foreach ($scripts as $script) {
+				echo '<script type="text/javascript" src="'.site_url($script).'"></script>';
+			    }
+			    
+			}
 		?>
 		
 	</head>

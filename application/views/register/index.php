@@ -18,6 +18,8 @@
 	    <label for="username">Lietotājs</label><input type="text" name="username" id="username" />
 	    <label for="password">Vēlamā parole</label><input type="password" name="password" id="password" />
 	    <label for="mail">E-pasts</label><input type="text" name="mail" id="mail" />
+	    <label for="website">Tīmekļa vietne</label><input type="website" name="website" id="website" />
+	    
 	    <input type="submit" value="Reģistrējiet mani, lūdzu!" />
 	</fieldset>
 
