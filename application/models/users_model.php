@@ -7,62 +7,67 @@ class users_model extends CI_Model {
 	$this->load->database();
     }
 
-    //vienkāršā autentifikācija, kur 
-    //tiešā veidā salīdzina iesūtītā parole <-> db parole 
-    public function simple_password($user, $pass) {
-	//"simple_password" ir tabulas nosaukums DB
-
-	$query = $this->db->get_where('simple_password', 
-				    array('user' => $user));
-	$items = $query->result();
-	if (sizeof($items) == 1) {
-	    $usrrow = $items[0];
-	    return ($pass == $usrrow->password);
-	} else {
-	    //lietotājs nav atrodams
-	    return false;
-	}
-    }
-
-    //DB glabājas parole, no kuras izrēķināts SHA-1
-    //salīdzina sha1(iesūtītā parole) <-> db paroles hašs
-    public function hashed_password($user, $pass) {
-	$query = $this->db->get_where('hashed_password', 
-				    array('user' => $user));
-	$items = $query->result();
-	if (sizeof($items) == 1) {
-	    $usrrow = $items[0];
-	    return (sha1($pass) == $usrrow->passhash);
-	} else {
-	    //lietotājs nav atrodams
-	    return false;
-	}
-    }
-
-    //DB glabājas parole, kurai pirms hašošanas beigās pielīmēts salt
-    //salīdzina sha1(iesūtītā parole + salt) <-> db paroles + salta hašs 
-    public function salted_password($user, $pass) {
-	$query = $this->db->get_where('salted_password', 
-			    array('user' => $user));
-	$items = $query->result();
-	if (sizeof($items) == 1) {
-	    $usrrow = $items[0];
-	    return (sha1($pass . $usrrow->salt) == $usrrow->passhash);
-	} else {
-	    //lietotājs nav atrodams
-	    return false;
-	}
-    }
+//
+//iekomentētais kods ir strādājošs, bet
+//nav nepieciešams 2011. gada TTII kursā
+//
+//#########################################################
+//    //vienkāršā autentifikācija, kur 
+//    //tiešā veidā salīdzina iesūtītā parole <-> db parole 
+//    public function simple_password($user, $pass) {
+//	//"simple_password" ir tabulas nosaukums DB
+//
+//	$query = $this->db->get_where('simple_password', 
+//				    array('user' => $user));
+//	$items = $query->result();
+//	if (sizeof($items) == 1) {
+//	    $usrrow = $items[0];
+//	    return ($pass == $usrrow->password);
+//	} else {
+//	    //lietotājs nav atrodams
+//	    return false;
+//	}
+//    }
+//
+//    //DB glabājas parole, no kuras izrēķināts SHA-1
+//    //salīdzina sha1(iesūtītā parole) <-> db paroles hašs
+//    public function hashed_password($user, $pass) {
+//	$query = $this->db->get_where('hashed_password', 
+//				    array('user' => $user));
+//	$items = $query->result();
+//	if (sizeof($items) == 1) {
+//	    $usrrow = $items[0];
+//	    return (sha1($pass) == $usrrow->passhash);
+//	} else {
+//	    //lietotājs nav atrodams
+//	    return false;
+//	}
+//    }
+//
+//    //DB glabājas parole, kurai pirms hašošanas beigās pielīmēts salt
+//    //salīdzina sha1(iesūtītā parole + salt) <-> db paroles + salta hašs 
+//    public function salted_password($user, $pass) {
+//	$query = $this->db->get_where('salted_password', 
+//			    array('user' => $user));
+//	$items = $query->result();
+//	if (sizeof($items) == 1) {
+//	    $usrrow = $items[0];
+//	    return (sha1($pass . $usrrow->salt) == $usrrow->passhash);
+//	} else {
+//	    //lietotājs nav atrodams
+//	    return false;
+//	}
+//    }
 
     //DB glabājas sha1( sha1 (parole) + salt ) 
     //klients iesūta sha1(parole)
     //salīdzina sha1(iesūtītā parole + salt) <-> db glabātais hešs 
     public function clienthash_password($user, $pass) {
-	$query = $this->db->get_where('clienthash_password', array('user' => $user));
+	$query = $this->db->get_where('user', array('name' => $user));
 	$items = $query->result();
 	if (sizeof($items) == 1) {
 	    $usrrow = $items[0];
-	    return (sha1($pass . $usrrow->salt) == $usrrow->passhash);
+	    return (sha1($pass . $usrrow->salt) == $usrrow->password);
 	} else {
 	    //lietotājs nav atrodams
 	    return false;
@@ -73,33 +78,35 @@ class users_model extends CI_Model {
      * Lietotāju reģistrācijas funkcijas
      */
 
-    public function register_user($user, $pass, $email) {
+    public function register_user($user, $pass, $email, $website) {
 	//meklēsim DB, vai tur jau tāds lietotājs nav definēts
-	$query = $this->db->get_where('registered_users', array('user' => $user));
+	$query = $this->db->get_where('user', array('name' => $user));
 	$items = $query->result();
 	if (sizeof($items) > 0) {
 	    return "Lietotājs ar šādu vārdu jau reģistrēts!";
 	}
 
-	//izdomājam jaunu salt - kaut kāds skaitlis
-	$salt = rand(100000, 999999);
+	//izdomājam jaunu salt vērtību - ciparu virknīte
+	$salt = md5(uniqid(rand(), TRUE)); 
 
 	//parole tiks izmantota lietojumiem, kur lietotājs jau iesūta sha1(pass)
 	$passhash = sha1(sha1($pass) . $salt);
 
 	$data = array(
-	    'user' => $user,
+	    'name' => $user,
 	    'password' => $passhash,
 	    'salt' => $salt,
 	    'email' => $email,
+	    'website' => $website,
 	    'validated' => 0
 	);
-	$this->db->insert('registered_users', $data);
+	$this->db->insert('user', $data);
 
-	return $this->sendmail($email, $user, $salt);
+	return $this->send_validation_email($email, $user, $salt);
     }
 
-    private function sendmail($mail, $user, $salt) {
+    private function send_validation_email($mail, $user, $salt) {
+	
 	//todo: izveidot konstantes MAIL_USER, MAIL_PASSWORD, USER_NAME
 	$config = Array(
 	    'protocol' => 'smtp',
@@ -114,7 +121,7 @@ class users_model extends CI_Model {
 	$this->email->from(MAIL_USER, USER_NAME);
 	$this->email->to($mail);
 
-	$this->email->subject('Reģistrācija vietnē localhost');
+	$this->email->subject('Reģistrācija WebGal sistēmā');
 
 	$mailbody = "Sveiki!
 	Lai pabeigtu reģistrāciju, lūdzu, uzklikšķini uz šīs saites:
@@ -130,13 +137,13 @@ class users_model extends CI_Model {
     //pārbaude, vai hipersaitē iekļautais salthash atbilst reālā salt-a hešam
     //ja jā, to saglabā DB.
     public function validate($user, $salthash) {
-	$query = $this->db->get_where('registered_users', array('user' => $user));
+	$query = $this->db->get_where('user', array('name' => $user));
 	$items = $query->result();
 	if (sizeof($items) == 1) {
 	    $usrrow = $items[0];
 	    if (sha1($usrrow->salt) == $salthash) {
 		//db esošais lietotājs atbilst atsūtītajam!
-		$this->db->where('user', $user);
+		$this->db->where('name', $user);
 		$this->db->update('registered_users', array('validated' => 1));
 		return "Apstiprināšana veiksmīga";
 	    } else {

@@ -2,11 +2,13 @@
     $this->load->view("shared/app_header");
 ?>
 <article id="main">
-	<?php
+    <ul>
+    <?php
 		foreach ($rowset as $row) {
-                    echo anchor("/photo/view/".$row->id, $row->title);
+                    echo "<li>".anchor("/photo/view/".$row->id, $row->title)."</li>";
 		}
 	?>
+	</ul>
     
 </article>
 

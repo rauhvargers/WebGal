@@ -1,9 +1,10 @@
 <?php
-    $this->load->view("shared/app_header");
+    $viewdata["scripts"] =array("/static/jquery.js", "/static/gallery_ajax.js");
+    $this->load->view("shared/app_header", $viewdata);
 ?>
 <article id="main">
     <h2>Galerija &laquo;<?php echo htmlspecialchars($gallery->title);?>&raquo;</h2>
-    <ul>
+    <ul id="galleryItems">
 	<?php	
 	foreach ($gallery->photos as $photo) {
 	    ?><li>
