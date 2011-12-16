@@ -1,6 +1,13 @@
 <?php
     $this->load->view("shared/app_header");
 ?>
+<script src="http://localhost/netbeans/WebGal/static/jquery.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $.get("http://localhost/netbeans/WebGal/gallery",
+	    function(data){
+		alert(data);
+	    });
+ </script>
 <article id="main">
     <ul>
     <?php
