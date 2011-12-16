@@ -16,11 +16,6 @@
 */
 $config['base_url']	= '';
 
-define("MAIL_USER", "");
-define("MAIL_PASSWORD", "");
-define("USER_NAME", "");
-define("FACEBOOK_APP_ID", "");
-define("FACEBOOK_APP_SECRET", "");
 /*
 |--------------------------------------------------------------------------
 | Index File

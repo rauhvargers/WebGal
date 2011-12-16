@@ -175,6 +175,21 @@ class Photo extends MY_Controller {
 	$viewdata = $this->DefaultViewData();
 	$this->load->view('photo/notfound', $viewdata);
     }
+    
+    /**
+     * Paredzēts izsaukšanai no AJAX
+     * @param type $id 
+     */
+    public function updatetitle($id){
+	$newtitle = $this->input->post("title");
+	
+	if ( ! empty($newtitle)) {
+	    
+	    $currentPic = $this->photo_model->read_by_id($id);
+	    $currentPic->title = $newtitle;
+	    $currentPic->update();
+	}
+    }
 
 }
 

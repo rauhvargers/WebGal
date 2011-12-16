@@ -52,6 +52,18 @@
 	return $this;
     }
     
+    //saglabā izmaiņas
+    public function update(){
+	$data = array(
+	   'title' => $this->title ,
+	   'description' => $this->description ,
+	   'gallery_id' =>  $this->gallery_id
+	   
+	);
+	$this->db->where('id', $this->id);
+	$this->db->update('picture', $data);
+	return $this;
+    }
     
     /***************************************/
     //Tālāk ir darbs ar attēlu failiem, nevis attēlu datiem
