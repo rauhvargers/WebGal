@@ -94,14 +94,15 @@ class Users extends CI_Controller {
 	$p = $this->input->post("password");
 
 	$this->load->model("Users_model");
-	$is_auth = $this->Users_model->clienthash_password($u, $p);
+	$auth_result = $this->Users_model->clienthash_password($u, $p);
 
-	if ($is_auth == false) {
+	if ($auth_result === false) {
 	    $data["error"] = "Autentifikācija nav veiksmīga";
 	    $this->load->view("authenticate/login_hash", $data);
 	} else {
 	    $this->session->set_userdata("is_authenticated", "true");
-	    $this->session->set_userdata("username", $u);
+	    $this->session->set_userdata("user_id", $auth_result["id"]);
+	    $this->session->set_userdata("userdata", $auth_result);
 	    $this->session->set_userdata("auth_method", "local");
 	    redirect('users/index', 'location');
 	}
