@@ -58,7 +58,6 @@ class users_model extends CI_Model {
 //	    return false;
 //	}
 //    }
-
     //DB glabājas sha1( sha1 (parole) + salt ) 
     //klients iesūta sha1(parole)
     //salīdzina sha1(iesūtītā parole + salt) <-> db glabātais hešs 
@@ -67,7 +66,17 @@ class users_model extends CI_Model {
 	$items = $query->result();
 	if (sizeof($items) == 1) {
 	    $usrrow = $items[0];
-	    return (sha1($pass . $usrrow->salt) == $usrrow->password);
+
+	    if ((sha1($pass . $usrrow->salt) == $usrrow->password)) {
+		//gadījums, kad autentifikācija tiešām veiksmīga
+		$return = array();
+		$return["username"] = $usrrow->name;
+		$return["id"] = $usrrow->id;
+		$return["role"] = $usrrow->role;
+		return $return;
+	    } else {
+		return false;
+	    }
 	} else {
 	    //lietotājs nav atrodams
 	    return false;
@@ -87,7 +96,7 @@ class users_model extends CI_Model {
 	}
 
 	//izdomājam jaunu salt vērtību - ciparu virknīte
-	$salt = md5(uniqid(rand(), TRUE)); 
+	$salt = md5(uniqid(rand(), TRUE));
 
 	//parole tiks izmantota lietojumiem, kur lietotājs jau iesūta sha1(pass)
 	$passhash = sha1(sha1($pass) . $salt);
@@ -106,7 +115,7 @@ class users_model extends CI_Model {
     }
 
     private function send_validation_email($mail, $user, $salt) {
-	
+
 	//todo: izveidot konstantes MAIL_USER, MAIL_PASSWORD, USER_NAME
 	$config = Array(
 	    'protocol' => 'smtp',

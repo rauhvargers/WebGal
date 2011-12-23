@@ -12,6 +12,10 @@ class MY_Controller extends CI_Controller {
 	$this->load->helper('webgal'); //pašu helper funkcijas
 	$this->load->library("session");
 	
+	$this->load->helper("language");
+	$this->lang->load("main", "latvian");
+	$this->lang->load("errors", "latvian");
+	
 	if ( ! $this->session->userdata("is_authenticated")) {
 	    redirect("users");
 	}
@@ -30,16 +34,20 @@ class MY_Controller extends CI_Controller {
 		case "facebook":
 		    $fb_json = $this->session->userdata("fb_data");
 		    $fb_data = json_decode($fb_json);
+		    $id = $fb_data->id;
 		    $username = $fb_data->name;
 		    break;
 		case "local" :
-		    $username = $this->session->userdata("username");
+		    $userdata = $this->session->userdata("userdata");
+		    $username = $userdata["username"];
+		    $id = $userdata["id"];
 		    break;
 	    }
 	}
 	return array("show_loginform" => !$is_auth,
 	    "show_logoutform" => $is_auth,
 	    "username" => $username,
+	    "userid" => $id,
 	    "pagetitle" => "Nav aizpildīts mainīgais pagetitle");
     }
 
