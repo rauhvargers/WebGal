@@ -14,11 +14,11 @@
 | path to your installation.
 |
 */
-define("MAIL_USER", "misame@gmail.com");
-define("MAIL_PASSWORD", "NevarVis51");
-define("USER_NAME", "Kriss Rauhvargers");
-define("FACEBOOK_APP_ID", "131976950246504");
-define("FACEBOOK_APP_SECRET", "f5e8228af548a3d5b038f34c053df01c");
+define("MAIL_USER", "");
+define("MAIL_PASSWORD", "");
+define("USER_NAME", "");
+define("FACEBOOK_APP_ID", "");
+define("FACEBOOK_APP_SECRET", "");
 
 $config['base_url']	= '';
 
